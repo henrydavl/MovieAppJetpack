@@ -1,0 +1,54 @@
+<resources>
+    <string name="app_name">UdemyJetpack</string>
+    <!--Bottom navigation-->
+    <string name="nav_movie">Movies</string>
+    <string name="nav_tv_show">Tv Shows</string>
+    <string name="favorite">Favorite</string>
+
+    <!--Main String-->
+    <string name="press_exit">Press again to exit!</string>
+    <string name="cast">Cast</string>
+    <string name="genres">Genres</string>
+    <string name="title_movie">Movies</string>
+    <string name="title_tv_show">TV Shows</string>
+    <string name="popular">Popularity: </string>
+    <string name="settings">Settings</string>
+
+    <!--Change Language Dialog-->
+    <string name="change_lang">Change Language</string>
+    <string name="lang">Choose Language</string>
+    <string name="en">English</string>
+    <string name="in">Indonesian</string>
+    <string name="change">Change</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="movie_catalogue" translatable="false">Movie Catalogue</string>
+    <string name="cast_picture">Cast Picture</string>
+    <string name="movie_cover_picture">Movie Cover Picture</string>
+    <string name="poster_image">Poster Image</string>
+    <string name="cover_image">Cover Image</string>
+    <string name="favorite_button">Favorite Button</string>
+    <string name="add_to_favorite">Add to Favorite</string>
+    <string name="rm_favorite">Remove from Favorite</string>
+    <string name="added_favorite">added to favorite</string>
+    <string name="rmed_favorite">removed from favorite</string>
+    <string name="no_coll">No collections</string>
+    <string name="search">Search</string>
+    <string name="search_movie">Search Movies</string>
+    <string name="search_tv">Search Tv Shows</string>
+    <string name="result_movie">Search Movies Result</string>
+    <string name="result_tv">Search Tv Shows Result</string>
+
+    <!--Dummy Text-->
+    <string name="dummy_text" translatable="false">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum</string>
+
+    <!--Reminder-->
+    <string name="daily_title">Daily Reminder</string>
+    <string name="daily_desc">you will receive a reminder to take a look inside Movie Catalog every day at 7 a.m.</string>
+    <string name="daily_message">Hi! Let\'s check out movie catalog today</string>
+    <string name="release_title">Movie Release Reminder</string>
+    <string name="release_desc">you will receive a reminder of movie that release on your current date at 8 a.m.</string>
+    <string name="release_message">has released today</string>
+    <string name="no_release_message">There are no released movie today</string>
+    <string name="error_occurred">An error occurred while loading data</string>
+</resources>

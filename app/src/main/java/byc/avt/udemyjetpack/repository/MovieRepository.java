@@ -42,6 +42,7 @@ public class MovieRepository {
             public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
                 if (response.isSuccessful()){
                     if (response.body() != null){
+
                         listMovies.postValue(response.body().getResults());
                     }
                 }

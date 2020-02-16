@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">UdemyJetpack</string>
+    <string name="app_name">MovieAppJetpack</string>
     <!--Bottom navigation-->
     <string name="nav_movie">Movies</string>
     <string name="nav_tv_show">Tv Shows</string>
@@ -51,4 +51,7 @@
     <string name="release_message">has released today</string>
     <string name="no_release_message">There are no released movie today</string>
     <string name="error_occurred">An error occurred while loading data</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

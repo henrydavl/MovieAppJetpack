@@ -4,22 +4,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/movieFragment">
-
+    app:startDestination="@id/splashScreenFragment">
+    <fragment
+        android:id="@+id/splashScreenFragment"
+        android:name="byc.avt.movieappjetpack.view.fragment.SplashScreenFragment"
+        android:label="fragment_splash_screen"
+        tools:layout="@layout/fragment_splash_screen" >
+        <action
+            android:id="@+id/action_main"
+            app:destination="@id/movieFragment"
+            app:popUpTo="@id/splashScreenFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
     <fragment
         android:id="@+id/movieFragment"
-        android:name="byc.avt.udemyjetpack.view.fragment.MovieFragment"
+        android:name="byc.avt.movieappjetpack.view.fragment.MovieFragment"
         android:label="fragment_movie"
         tools:layout="@layout/fragment_movie" >
         <action
             android:id="@+id/action_detail"
-            app:destination="@id/detailFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim" />
+            app:destination="@id/detailFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
-        android:name="byc.avt.udemyjetpack.view.fragment.DetailFragment"
+        android:name="byc.avt.movieappjetpack.view.fragment.DetailFragment"
         android:label="fragment_detail"
         tools:layout="@layout/fragment_detail" >
         <action
@@ -27,6 +35,6 @@
             app:destination="@id/movieFragment" />
         <argument
             android:name="item"
-            app:argType="byc.avt.udemyjetpack.model.Movie" />
+            app:argType="byc.avt.movieappjetpack.model.Movie" />
     </fragment>
 </navigation>

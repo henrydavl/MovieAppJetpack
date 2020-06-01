@@ -10,7 +10,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -60,15 +59,49 @@ public class MovieFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         showLoading(true);
-        ((MainActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
-        ((MainActivity) getActivity()).getSupportActionBar().setIcon(R.drawable.ic_outline_movie);
-        ((MainActivity) getActivity()).getSupportActionBar().setTitle(" " + getString(R.string.title_movie));
+        Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar()).setDisplayShowHomeEnabled(true);
+        Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
+        Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar()).setIcon(R.drawable.ic_outline_movie);
+        Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar()).setTitle(" " + getString(R.string.title_movie));
         rvMovie.setLayoutManager(new LinearLayoutManager(getContext()));
         movieAdapter = new MovieAdapter(getActivity());
-        viewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(MovieViewModel.class);
-        viewModel.getMovieDiscovery().observe(getActivity(), getMovieData);
-        refreshLayout.setOnRefreshListener(() -> refreshLayout.setRefreshing(false));
+
+        viewModel = ViewModelProviders.of(requireActivity()).get(MovieViewModel.class);
+
+        viewModel.refresh();
+
+        refreshLayout.setOnRefreshListener(() -> {
+            showLoading(true);
+            viewModel.forceRefresh();
+            refreshLayout.setRefreshing(false);
+        });
+
         clickSupport(view);
+        observeViewModel();
+    }
+
+    private void observeViewModel() {
+        viewModel.listMovies.observe(requireActivity(), movies -> {
+            if (movies != null) {
+                temp.addAll(movies);
+                movieAdapter.setMovies(movies);
+                movieAdapter.notifyDataSetChanged();
+                rvMovie.setVisibility(View.VISIBLE);
+                rvMovie.setAdapter(movieAdapter);
+            }
+        });
+
+        viewModel.movieError.observe(requireActivity(), error -> {
+            if (error != null) {
+                tvError.setVisibility(error ? View.VISIBLE : View.GONE);
+            }
+        });
+
+        viewModel.loading.observe(requireActivity(), loading -> {
+            if (loading != null) {
+                showLoading(loading);
+            }
+        });
     }
 
     private void clickSupport(View view) {
@@ -78,21 +111,10 @@ public class MovieFragment extends Fragment {
         });
     }
 
-    private Observer<List<Movie>> getMovieData = new Observer<List<Movie>>() {
-        @Override
-        public void onChanged(List<Movie> movies) {
-            if (movies != null){
-                temp.addAll(movies);
-                movieAdapter.setMovies(movies);
-                movieAdapter.notifyDataSetChanged();
-                rvMovie.setAdapter(movieAdapter);
-                showLoading(false);
-            }
-        }
-    };
-
     private void showLoading(Boolean state) {
         if (state) {
+            rvMovie.setVisibility(View.GONE);
+            tvError.setVisibility(View.GONE);
             progressBar.setVisibility(View.VISIBLE);
         } else {
             progressBar.setVisibility(View.GONE);

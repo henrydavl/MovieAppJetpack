@@ -3,29 +3,42 @@ package byc.avt.movieappjetpack.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
 
-//@Entity
+@Entity
 public class Movie implements Parcelable {
+    @ColumnInfo(name = "movie_id")
     @SerializedName("id")
     private String id_movie;
+
+    @ColumnInfo(name = "movie_title")
     @SerializedName("title")
     private String title;
+
+    @ColumnInfo(name = "movie_popularity")
     @SerializedName("popularity")
     private String popularity;
+
+    @ColumnInfo(name = "movie_overview")
     @SerializedName("overview")
     private String description;
+
+    @ColumnInfo(name = "movie_image_url")
     @SerializedName("poster_path")
     private String poster;
+
+    @ColumnInfo(name = "movie_backdrop_url")
     @SerializedName("backdrop_path")
     private String cover;
+
     @SerializedName("release_date")
     private String releaseDate;
 
-//    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey(autoGenerate = true)
     public int uId;
 
     public Movie() {

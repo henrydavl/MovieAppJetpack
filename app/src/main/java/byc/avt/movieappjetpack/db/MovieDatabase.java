@@ -8,16 +8,17 @@ import androidx.room.RoomDatabase;
 
 import byc.avt.movieappjetpack.model.Movie;
 
-//@Database(entities = {Movie.class}, version = 1)
-//public abstract class MovieDatabase extends RoomDatabase {
-//    private static MovieDatabase instance;
-//
-//    public static MovieDatabase getInstance(Context context){
-//        if (instance == null){
-//            instance = Room.databaseBuilder(context.getApplicationContext(), MovieDatabase.class, "MovieDatabase").build();
-//        }
-//        return instance;
-//    }
-//
-//    public abstract MovieDao movieDao();
-//}
+@Database(entities = {Movie.class}, version = 1)
+public abstract class MovieDatabase extends RoomDatabase {
+    private static MovieDatabase instance;
+
+    public static MovieDatabase getInstance(Context context){
+        if (instance == null){
+            instance = Room.databaseBuilder(
+                    context.getApplicationContext(), MovieDatabase.class, "MovieDatabase").build();
+        }
+        return instance;
+    }
+
+    public abstract MovieDao movieDao();
+}

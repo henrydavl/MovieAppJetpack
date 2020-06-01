@@ -8,25 +8,24 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
-import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import byc.avt.movieappjetpack.BuildConfig;
 import byc.avt.movieappjetpack.R;
 import byc.avt.movieappjetpack.adapter.CastAdapter;
-import byc.avt.movieappjetpack.model.Cast;
 import byc.avt.movieappjetpack.model.Genre;
 import byc.avt.movieappjetpack.model.Movie;
 import byc.avt.movieappjetpack.view.MainActivity;
@@ -57,6 +56,7 @@ public class DetailFragment extends Fragment {
     @BindView(R.id.rv_cast)
     RecyclerView rvCast;
 
+    private DetailViewModel viewModel;
     private CastAdapter castAdapter;
 
     public DetailFragment() {
@@ -73,51 +73,62 @@ public class DetailFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+        Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar()).setDisplayShowHomeEnabled(false);
         showLoading(true);
         rvCast.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         castAdapter = new CastAdapter(getActivity());
-        DetailViewModel viewModel = ViewModelProviders.of(this).get(DetailViewModel.class);
-        ((MainActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(false);
+        viewModel = ViewModelProviders.of(this).get(DetailViewModel.class);
+
         if (getArguments() != null) {
             Movie m = DetailFragmentArgs.fromBundle(getArguments()).getItem();
             init(m);
-            viewModel.getGenre(m.getId_movie()).observe(getActivity(), loadGenre);
-            viewModel.getCast(m.getId_movie()).observe(getActivity(), loadCast);
+            viewModel.getData(m.getId_movie());
         }
+
+        observeViewModel();
     }
 
-    private Observer<List<Genre>> loadGenre = new Observer<List<Genre>>() {
-        @Override
-        public void onChanged(List<Genre> movieGenres) {
-            if (movieGenres != null) {
-                for (int i = 0; i < movieGenres.size(); i++) {
-                    Genre g = movieGenres.get(i);
-                    if (i < movieGenres.size() - 1){
+    private void observeViewModel() {
+
+        viewModel.listGenres.observe(requireActivity(), genres -> {
+            if (genres != null) {
+                for (int i = 0; i < genres.size(); i++) {
+                    Genre g = genres.get(i);
+                    if (i < genres.size() - 1){
                         tv_genre.append(g.getName() + " | ");
                     } else {
                         tv_genre.append(g.getName());
                     }
                 }
             }
-        }
-    };
+        });
 
-    private Observer<List<Cast>> loadCast = new Observer<List<Cast>>() {
-        @Override
-        public void onChanged(@Nullable List<Cast> casts) {
+        viewModel.listCast.observe(requireActivity(), casts -> {
             if (casts != null){
                 castAdapter.setCasts(casts);
                 castAdapter.notifyDataSetChanged();
                 rvCast.setAdapter(castAdapter);
-                showLoading(false);
             }
-        }
-    };
+        });
+
+        viewModel.movieError.observe(requireActivity(), error -> {
+            if (error != null) {
+                if  (error) Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
+//                tvError.setVisibility(error ? View.VISIBLE : View.GONE);
+            }
+        });
+
+        viewModel.loading.observe(requireActivity(), loading -> {
+            if (loading != null) {
+                showLoading(loading);
+            }
+        });
+    }
 
     private void init(Movie m){
-        ((MainActivity) getActivity()).getSupportActionBar().setTitle(m.getTitle());
-        Glide.with(getActivity()).load(BuildConfig.BASE_IMAGE_URL + m.getCover()).into(detailCover);
-        Glide.with(getActivity()).load(BuildConfig.BASE_IMAGE_URL + m.getPoster()).into(detailPoster);
+        Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar()).setTitle(m.getTitle());
+        Glide.with(requireActivity()).load(BuildConfig.BASE_IMAGE_URL + m.getCover()).into(detailCover);
+        Glide.with(requireActivity()).load(BuildConfig.BASE_IMAGE_URL + m.getPoster()).into(detailPoster);
         tv_title.setText(m.getTitle());
         tv_popular.setText(m.getPopularity());
         tv_description.setText(m.getDescription());

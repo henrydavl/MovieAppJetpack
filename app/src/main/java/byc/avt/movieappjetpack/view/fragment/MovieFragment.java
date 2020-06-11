@@ -11,21 +11,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import byc.avt.movieappjetpack.R;
 import byc.avt.movieappjetpack.adapter.MovieAdapter;
-import byc.avt.movieappjetpack.model.Movie;
-import byc.avt.movieappjetpack.util.ItemClickSupport;
 import byc.avt.movieappjetpack.view.MainActivity;
 import byc.avt.movieappjetpack.viewmodel.MovieViewModel;
 
@@ -42,7 +37,6 @@ public class MovieFragment extends Fragment {
 
     private MovieViewModel viewModel;
     private MovieAdapter movieAdapter;
-    private List<Movie> temp = new ArrayList<>();
 
     public MovieFragment() {
 
@@ -76,14 +70,12 @@ public class MovieFragment extends Fragment {
             refreshLayout.setRefreshing(false);
         });
 
-        clickSupport(view);
         observeViewModel();
     }
 
     private void observeViewModel() {
         viewModel.listMovies.observe(requireActivity(), movies -> {
             if (movies != null) {
-                temp.addAll(movies);
                 movieAdapter.setMovies(movies);
                 movieAdapter.notifyDataSetChanged();
                 rvMovie.setVisibility(View.VISIBLE);
@@ -101,13 +93,6 @@ public class MovieFragment extends Fragment {
             if (loading != null) {
                 showLoading(loading);
             }
-        });
-    }
-
-    private void clickSupport(View view) {
-        ItemClickSupport.addTo(rvMovie).setOnItemClickListener((recyclerView, position, v) -> {
-            MovieFragmentDirections.ActionDetail action = MovieFragmentDirections.actionDetail(temp.get(position));
-            Navigation.findNavController(view).navigate(action);
         });
     }
 

@@ -3,7 +3,7 @@ This repository contains simple Movie Catalogue Application from [themoviedb API
 
 ![alt text](https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/7f98014e-7a83-4138-a97a-bbc112df6319/ddz5inn-acc65cf1-dda0-421f-a7a9-223824bbeacb.png/v1/fill/w_1024,h_683,q_80,strp/movie_application_jetpack_by_henhiro4r_ddz5inn-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3siaGVpZ2h0IjoiPD02ODMiLCJwYXRoIjoiXC9mXC83Zjk4MDE0ZS03YTgzLTQxMzgtYTk3YS1iYmMxMTJkZjYzMTlcL2RkejVpbm4tYWNjNjVjZjEtZGRhMC00MjFmLWE3YTktMjIzODI0YmJlYWNiLnBuZyIsIndpZHRoIjoiPD0xMDI0In1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.qrjJhG6mn29byr6nWk4mNXskVNN_ya8I4uxiTdsP4oE)
 
-#### Update
+### Future Update
 Will add favorite and tv show data soon!
 
 ### Library References

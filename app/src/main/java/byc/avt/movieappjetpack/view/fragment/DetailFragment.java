@@ -12,20 +12,19 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-
 import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import byc.avt.movieappjetpack.BuildConfig;
 import byc.avt.movieappjetpack.R;
 import byc.avt.movieappjetpack.adapter.CastAdapter;
+import byc.avt.movieappjetpack.databinding.FragmentDetailBinding;
 import byc.avt.movieappjetpack.model.Genre;
 import byc.avt.movieappjetpack.model.Movie;
 import byc.avt.movieappjetpack.view.MainActivity;
@@ -37,18 +36,8 @@ public class DetailFragment extends Fragment {
     ProgressBar pb_detail;
     @BindView(R.id.layerHide)
     ImageView layerHide;
-    @BindView(R.id.detail_cover)
-    ImageView detailCover;
-    @BindView(R.id.detail_poster)
-    ImageView detailPoster;
     @BindView(R.id.img_fav)
     ImageView addFav;
-    @BindView(R.id.detail_title)
-    TextView tv_title;
-    @BindView(R.id.detail_description)
-    TextView tv_description;
-    @BindView(R.id.detail_popular)
-    TextView tv_popular;
     @BindView(R.id.detail_genre)
     TextView tv_genre;
     @BindView(R.id.tv_addFav)
@@ -58,15 +47,18 @@ public class DetailFragment extends Fragment {
 
     private DetailViewModel viewModel;
     private CastAdapter castAdapter;
+    private FragmentDetailBinding binding;
 
     public DetailFragment() {
 
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_detail, container, false);
+        FragmentDetailBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_detail, container, false);
+        this.binding = binding;
+        return binding.getRoot();
     }
 
     @Override
@@ -94,7 +86,7 @@ public class DetailFragment extends Fragment {
             if (genres != null) {
                 for (int i = 0; i < genres.size(); i++) {
                     Genre g = genres.get(i);
-                    if (i < genres.size() - 1){
+                    if (i < genres.size() - 1) {
                         tv_genre.append(g.getName() + " | ");
                     } else {
                         tv_genre.append(g.getName());
@@ -104,7 +96,7 @@ public class DetailFragment extends Fragment {
         });
 
         viewModel.listCast.observe(requireActivity(), casts -> {
-            if (casts != null){
+            if (casts != null) {
                 castAdapter.setCasts(casts);
                 castAdapter.notifyDataSetChanged();
                 rvCast.setAdapter(castAdapter);
@@ -113,8 +105,7 @@ public class DetailFragment extends Fragment {
 
         viewModel.movieError.observe(requireActivity(), error -> {
             if (error != null) {
-                if  (error) Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
-//                tvError.setVisibility(error ? View.VISIBLE : View.GONE);
+                if (error) Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -125,14 +116,10 @@ public class DetailFragment extends Fragment {
         });
     }
 
-    private void init(Movie m){
+    private void init(Movie m) {
         Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar()).setTitle(m.getTitle());
-        Glide.with(requireActivity()).load(BuildConfig.BASE_IMAGE_URL + m.getCover()).into(detailCover);
-        Glide.with(requireActivity()).load(BuildConfig.BASE_IMAGE_URL + m.getPoster()).into(detailPoster);
-        tv_title.setText(m.getTitle());
-        tv_popular.setText(m.getPopularity());
-        tv_description.setText(m.getDescription());
         showLoading(false);
+        binding.setMovieData(m);
     }
 
     private void showLoading(Boolean state) {
@@ -143,8 +130,8 @@ public class DetailFragment extends Fragment {
             pb_detail.setVisibility(View.GONE);
             layerHide.setAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out));
             layerHide.setVisibility(View.GONE);
-            detailCover.setAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.scale_animation));
-            detailPoster.setAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.fade_transition));
+            binding.detailCover.setAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.scale_animation));
+            binding.detailPoster.setAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.fade_transition));
         }
     }
 }

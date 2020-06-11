@@ -26,7 +26,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    dataBinding.enabled = true
+    dataBinding { 
+        enabled = true
+    }
 }
 
 def lifecycleExtensionVersion = '1.1.1'
